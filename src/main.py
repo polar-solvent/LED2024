@@ -1,11 +1,14 @@
 import cv2
+import numpy as np
 
-img = cv2.imread("./assets/rapid.bmp")
-for _ in range(12):
-    a = img[:,0,:]
-    img[:,:-1,:] = img[:,1:,:]
-    img[:,-1,:] = a
-cv2.imshow("image",img)
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+SIZE = 16
+img = cv2.imread("./assets/src/rapid.bmp")
+h,w,c = img.shape
+img = np.hstack([np.zeros((h,SIZE,3),dtype=np.uint8),img,np.zeros((h,SIZE,3),dtype=np.uint8)])
+for i in range(w+SIZE):
+    currentframe=img[:,i:i+SIZE,:]
+    cv2.imshow("image",currentframe)
+    
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    cv2.imwrite(f"./assets/dest/frame_{i}.bmp",currentframe)
