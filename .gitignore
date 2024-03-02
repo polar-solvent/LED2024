@@ -1,2 +1,4 @@
 .venv/
 assets/dest/
+build
+led2024.egg-info
