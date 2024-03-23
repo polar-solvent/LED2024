@@ -2,3 +2,4 @@
 assets/dest/
 build
 led2024.egg-info
+__pycache__
