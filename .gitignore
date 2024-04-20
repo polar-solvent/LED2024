@@ -1,6 +1,5 @@
 .venv/
-assets/dest/
+assets/
 build
 led2024.egg-info
 __pycache__
-pe.py
