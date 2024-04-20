@@ -1,35 +1,58 @@
+import sys
 import os
 import re
 import cv2
-import time
+from lib import parse_input_path, parse_options
 
-dir_path = "assets/dest"
-def is_frame(f):
-    return re.match(r"frame_\d+\.bmp", f)
+def parse_args():
+    ops = {"speed": {"command": "-s", "default": "60"}}
 
-frames_name = [
-    f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f)) and is_frame(f)
-]
+    argv = sys.argv
 
-def sort_frame(f):
-    m = re.match(r"frame_(\d+)\.bmp", f)
-    return int(m.group(1))
-
-frames_name_sorted = sorted(frames_name,key=sort_frame)
-
-cv2.namedWindow("image")
-
-frames = [cv2.imread(f"./assets/dest/{f}") for f in frames_name_sorted]
+    input_path = parse_input_path(argv)
+    option_value = parse_options(argv, ops)
     
-st = time.perf_counter()
+    return (input_path, *option_value)
+    
+def main():
+    input_path, speed_str = parse_args()
 
-for f in frames:
-    cv2.imshow("image", f)
+    speed = int(speed_str)
 
-    cv2.waitKey(10)
+    if speed < 1:
+        print("enter frame rate more than 0")
+        sys.exit(1)
 
-ed = time.perf_counter()
+    dir_path, frame_name_original= os.path.split(input_path)
+    underscore_index = frame_name_original.rindex("_")
+    frame_name = frame_name_original[:underscore_index]
+    
+    def is_frame(f:str):
+        return re.match(rf"{frame_name}_\d+\.bmp", f)
 
-cv2.destroyAllWindows()
+    frames_name = [
+        f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f)) and is_frame(f)
+    ]
 
-print(ed - st)
+    if frames_name == []:
+        print("no frames here")
+        sys.exit(1)
+
+    def sort_frame(f:str):
+        m = re.match(rf"{frame_name}_(\d+)\.bmp", f)
+        return int(m.group(1))
+
+    frames_name_sorted = sorted(frames_name,key=sort_frame)
+
+    cv2.namedWindow("image")
+
+    frames = [cv2.imread(rf"{dir_path}/{f}") for f in frames_name_sorted]
+
+    wait_ms = 1000//speed
+
+    for f in frames:
+        cv2.imshow("image", f)
+
+        cv2.waitKey(wait_ms)
+
+    cv2.destroyAllWindows()

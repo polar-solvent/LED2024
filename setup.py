@@ -11,11 +11,11 @@ setup(
     author='polar_solvent',
     url='https://github.com/polar-solvent/LED2024',
     license="MIT",
-    package_dir={"ledmaking": "src"}, #"ledmaking"が"src"として認識され、インストールしたファイルにはsrcがledmakingになっている
-    packages=["ledmaking"], #"ledmaking"というパッケージがある(中身はsrc)
+    package_dir={"": "src"}, #srcをルートとする=何も書かなかった場合srcが自動で適応される
     entry_points={
         "console_scripts": [
-            "ledmaking=ledmaking.main:main" #"ledmaking"とターミナルに入力することでledmaking.main内のmainという関数を実行できる
+            "ledmaking=main:main", #"ledmaking"とターミナルに入力することで(src).main内のmainという関数を実行できる
+            "ledshowing=show:main" #同様
         ]
     },
     install_requires = requirements_txt_read("requirements.txt"),
