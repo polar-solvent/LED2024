@@ -1,26 +1,23 @@
+import argparse
 import sys
 import os
 import re
 import cv2
-from lib import parse_input_path, parse_options
 
-def parse_args():
-    ops = {"speed": {"command": "-s", "default": "60"}}
-
-    argv = sys.argv
-
-    input_path = parse_input_path(argv)
-    option_value = parse_options(argv, ops)
-    
-    return (input_path, *option_value)
+parser = argparse.ArgumentParser(description="画像群を読み込み、末尾の数字の順番通りに一定の速さで表示する。")
+parser.add_argument("input_path", type=str, help="表示する画像群のパス。一つの画像のパスを入力すればよい。")
+parser.add_argument("-s","--speed", type=int, default=60, help="表示するときの、次の画像へ移る速さ。デフォルトは60fps。数字が大きいほど速い。")
+args = parser.parse_args()
     
 def main():
-    input_path, speed_str = parse_args()
-
-    speed = int(speed_str)
+    input_path, speed = args.input_path, args.speed
 
     if speed < 1:
         print("enter frame rate more than 0")
+        sys.exit(1)
+
+    elif speed > 1000:
+        print("enter frame rate less than 1000")
         sys.exit(1)
 
     dir_path, frame_name_original= os.path.split(input_path)

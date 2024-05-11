@@ -1,31 +1,19 @@
+import argparse
 import cv2
 import numpy as np
 import sys
 import os
 import re
-from lib import parse_input_path, parse_options
 
-def parse_args():
-    ops = {"width":{"command": "-w", "default": "16"}, 
-           "dest": {"command": "-d", "default": "./assets/dest"}, 
-           "name": {"command": "-n", "default": "frame"}}
-    
-    argv = sys.argv
-
-    input_path = parse_input_path(argv)
-    option_value = parse_options(argv, ops)
-    
-    return (input_path, *option_value)
-
-    
+parser = argparse.ArgumentParser(description="指定した画像ファイルを1pxずつずらし、bmp画像にして出力する。")
+parser.add_argument("input_path", type=str, help="指定する画像のパス。")
+parser.add_argument("-w","--width", type=int, default=320, help="出力する画像の横幅。デフォルトは320px")
+parser.add_argument("-d","--dest", type=str, default="./assets/dest", help="出力先のディレクトリ(指定したディレクトリが存在しない場合は作成される)。デフォルトはカレントディレクトリ内のassets/dest")
+parser.add_argument("-n","--name", type=str, default="frame", help="出力する画像の名前。デフォルトはframe_数字.bmpで、frameの部分を変えられる。")
+args = parser.parse_args()
 
 def main():
-    input_path, size_str, dest, name = parse_args()
-    size = int(size_str)
-
-    if input_path[0] == "-":
-        print("enter image path first")
-        sys.exit(1)
+    input_path, size, dest, name = args.input_path, args.width, args.dest, args.name
 
     if size < 1:
         print("enter size more than 0")
