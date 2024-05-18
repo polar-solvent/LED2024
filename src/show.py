@@ -4,7 +4,7 @@ import os
 import re
 import cv2
 
-parser = argparse.ArgumentParser(description="画像群を読み込み、末尾の数字の順番通りに一定の速さで表示する。")
+parser = argparse.ArgumentParser(description="画像群を読み込み、末尾の数字の順番通りに一定の速さで表示する。qを押すと終了する。")
 parser.add_argument("input_path", type=str, help="表示する画像群のパス。一つの画像のパスを入力すればよい。")
 parser.add_argument("-s","--speed", type=int, default=60, help="表示するときの、次の画像へ移る速さ。デフォルトは60fps。数字が大きいほど速い。")
 args = parser.parse_args()
@@ -50,6 +50,8 @@ def main():
     for f in frames:
         cv2.imshow("image", f)
 
-        cv2.waitKey(wait_ms)
+        if cv2.waitKey(wait_ms) == ord("q"):
+            break
 
     cv2.destroyAllWindows()
+    
