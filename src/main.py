@@ -5,18 +5,26 @@ import sys
 import os
 import re
 
-parser = argparse.ArgumentParser(description="指定した画像ファイルを1pxずつずらし、bmp画像にして出力する。")
+parser = argparse.ArgumentParser(description="指定した画像ファイルを任意のpxずつずらし、bmp画像にして出力する。")
 parser.add_argument("input_path", type=str, help="指定する画像のパス。")
 parser.add_argument("-w","--width", type=int, default=320, help="出力する画像の横幅。デフォルトは320px")
+parser.add_argument("-i","--interval", type=int, default=1, help="出力する画像1枚ごとにずらすpx数。デフォルトは1px")
 parser.add_argument("-d","--dest", type=str, default="./assets/dest", help="出力先のディレクトリ(指定したディレクトリが存在しない場合は作成される)。デフォルトはカレントディレクトリ内のassets/dest")
 parser.add_argument("-n","--name", type=str, default="frame", help="出力する画像の名前。デフォルトはframe_数字.bmpで、frameの部分を変えられる。")
 args = parser.parse_args()
 
 def main():
-    input_path, size, dest, name = args.input_path, args.width, args.dest, args.name
+    input_path, size, interval, dest, name = args.input_path, args.width, args.interval, args.dest, args.name
 
     if size < 1:
         print("enter size more than 0")
+        sys.exit(1)
+
+    if interval < 1:
+        print("enter interval more than 0")
+        sys.exit(1)
+    elif interval > size:
+        print("enter interval less than width")
         sys.exit(1)
 
     if not re.fullmatch(r"[-\w]+", name):
@@ -37,9 +45,12 @@ def main():
         print(e)
         sys.exit(1)
 
-    for i in range(w+size):
-        currentframe=img[:,i:i+size,:]
+    start, i = 0, 0
+    while start < w + size:
+        currentframe=img[:,start:start+size,:]
         cv2.imwrite(f"{dest}/{name}_{i}.bmp",currentframe)
+        start += interval
+        i += 1
 
 if __name__ == "__main__":
     main()

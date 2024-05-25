@@ -32,7 +32,7 @@ def main():
     ]
 
     if frames_name == []:
-        print("no frames here")
+        print("no such frames in this directory")
         sys.exit(1)
 
     def sort_frame(f:str):
