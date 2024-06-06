@@ -23,7 +23,11 @@ def main():
     dir_path, frame_name_original= os.path.split(input_path)
     underscore_index = frame_name_original.rindex("_")
     frame_name = frame_name_original[:underscore_index]
-    
+
+    if not os.path.isdir(dir_path):
+        print("no such directory")
+        sys.exit(1)
+
     def is_frame(f:str):
         return re.match(rf"{frame_name}_\d+\.bmp", f)
 
