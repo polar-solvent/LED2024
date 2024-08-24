@@ -2,15 +2,17 @@ import argparse
 import sys
 import os
 import re
+import numpy as np
 import cv2
 
 parser = argparse.ArgumentParser(description="画像群を読み込み、末尾の数字の順番通りに一定の速さで表示する。qを押すと終了する。")
 parser.add_argument("input_path", type=str, help="表示する画像群のパス。一つの画像のパスを入力すればよい。")
-parser.add_argument("-s","--speed", type=int, default=60, help="表示するときの、次の画像へ移る速さ。デフォルトは60fps。数字が大きいほど速い。")
+parser.add_argument("-f","--fps", type=int, default=60, help="表示するときの、次の画像へ移る速さ。デフォルトは60fps。数字が大きいほど速い。")
+parser.add_argument("-s","--save", type=str, default="./assets/dest/video.mp4", help="表示した画像群を動画にして保存する。保存場所と名前を拡張子'.mp4'をつけて入力する。")
 args = parser.parse_args()
     
 def main():
-    input_path, speed = args.input_path, args.speed
+    input_path, speed, dest = args.input_path, args.fps, args.save
 
     if speed < 1:
         print("enter frame rate more than 0")
@@ -18,6 +20,18 @@ def main():
 
     elif speed > 1000:
         print("enter frame rate less than 1000")
+        sys.exit(1)
+
+    des_path, save_name= os.path.split(dest)
+
+    if os.path.splitext(save_name)[1] != ".mp4":
+        print("extension of video must be '.mp4'")
+        sys.exit(1)
+
+    try :
+        os.makedirs(des_path, exist_ok=True)
+    except Exception as e:
+        print(e)
         sys.exit(1)
 
     dir_path, frame_name_original= os.path.split(input_path)
@@ -59,3 +73,12 @@ def main():
 
     cv2.destroyAllWindows()
     
+    if save_name != "":
+        h,w,c = frames[0].shape
+        fourcc = cv2.VideoWriter.fourcc('m', 'p', '4', 'v')
+        video  = cv2.VideoWriter(dest, fourcc, speed, (w, h))
+
+        for frame in frames:
+            video.write(frame)
+        
+        video.release()
