@@ -34,6 +34,7 @@ pip install git+https://github.com/polar-solvent/LED2024
 ledmaking ./assets/src/snow.bmp -W 192 -I 3 -n snow -d ./assets/dest/snow
 ```
 上記の例で実行すると、カレントディレクトリ内の`assets/src/snow.bmp`という画像を読み込み、横幅192pxの枠の中で指定した画像が3pxずつ右から左へとずれた画像群が保存されます。場所はカレントディレクトリ内の`assets/dest/snow`で、`snow_0.bmp`～`snow_xxx.bmp`という名前で保存されています。
+
 ![snow192_i3](./docs/snow192_i3.gif)
 
 
@@ -42,6 +43,7 @@ ledmaking ./assets/src/snow.bmp -W 192 -I 3 -n snow -d ./assets/dest/snow
 ledmaking ./assets/src/snow.bmp -W 192 -I 192 -n snow_p192 -d ./assets/dest/snow_p192
 ```
 上記の例で実行すると、`snow.bmp`という画像を左から192pxずつ切り取った画像が保存されます。
+
 ![snow_p192](./docs/snow_p192.gif)
 
 
@@ -50,6 +52,7 @@ ledmaking ./assets/src/snow.bmp -W 192 -I 192 -n snow_p192 -d ./assets/dest/snow
 ledmaking ./assets/src/rapid.bmp -u -r -n rapid_ur -d ./assets/dest/rapid_ur
 ```
 上記の例で実行すると、`rapid.bmp`という画像を、画像と同じ大きさの枠内で上から下へ1pxずつずらした画像が保存されます。
+
 ![rapid_ur](./docs/rapid_ur.gif)
 
 
@@ -81,5 +84,6 @@ ledshowing ./assets/dest/snow/snow_0.bmp -f 30
 ledshowing ./assets/dest/snow/snow_0.bmp -f 180 -s ./assets/dest/videos/snow.mp4
 ```
 上記の例で実行すると、カレントディレクトリ内の`assets/dest/videos`というフォルダに`snow.mp4`という名前で、1秒に180枚の速さで表示される画像群がmp4形式で保存されます。
+
 ![snow192_i3_180](./docs/snow192_i3_180fps.gif "保存される動画")
 
