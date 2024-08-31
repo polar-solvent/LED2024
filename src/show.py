@@ -82,3 +82,8 @@ def main():
             video.write(frame)
         
         video.release()
+
+        ######
+        ######
+        #gifできた
+        #mp4消す

@@ -55,14 +55,14 @@ def main():
     
 
     if args.upright:
-        if height is None:
+        if width is None:
             frame_height = max(w)
         else:
-            frame_height = height
-        if width is None:
+            frame_height = width
+        if height is None:
             frame_width = sum(h)
         else:
-            frame_width = width
+            frame_width = height
         if interval > frame_width:
             print("enter interval less than width")
             sys.exit(1)
