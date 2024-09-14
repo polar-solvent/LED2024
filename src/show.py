@@ -57,8 +57,12 @@ def main():
     for f in frames:
         cv2.imshow("image", f)
 
-        if cv2.waitKey(wait_ms) == ord("q"):
+        key = cv2.waitKey(wait_ms)
+        if key == ord("q"):
             break
+        elif key == ord("p"):
+            while cv2.waitKey(0) != ord("p"):
+                pass
 
     cv2.destroyAllWindows()
 
@@ -72,8 +76,7 @@ def main():
             sys.exit(1)
 
         name, ext = os.path.splitext(dest)[0], os.path.splitext(dest)[1]
-        # print(name)
-        # print(ext)
+
         if name == des_path:
             print("enter valid name")
             sys.exit(1)
@@ -95,7 +98,4 @@ def main():
                 clip = VideoFileClip(f"{name}.mp4")
                 clip.write_gif(f"{name}.gif", fps=30, program="ffmpeg")
 
-            ######
-            ######
-            #gifできた
-            #mp4消す
+            
