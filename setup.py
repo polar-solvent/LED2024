@@ -5,7 +5,7 @@ def requirements_txt_read(path):
 
 setup(
     name='led2024',
-    version="1.0.0",
+    version="1.2.0",
     author='polar_solvent',
     url='https://github.com/polar-solvent/LED2024',
     license="MIT",
