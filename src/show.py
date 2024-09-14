@@ -2,7 +2,6 @@ import argparse
 import sys
 import os
 import re
-import numpy as np
 import cv2
 from moviepy.editor import VideoFileClip
 
